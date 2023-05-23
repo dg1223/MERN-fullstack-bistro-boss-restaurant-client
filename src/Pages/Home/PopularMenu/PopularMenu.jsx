@@ -14,14 +14,19 @@ const PopularMenu = () => {
   }, []);
   return (
     <section className="mb-12">
-      <SectionTitle
-        header={"from our menu"}
-        subHeader={"check it out"}
-      ></SectionTitle>
-      <div className="grid md:grid-cols-2 gap-10">
-        {menu.map((item) => (
-          <MenuItem key={item._id} item={item}></MenuItem>
-        ))}
+      <div className="flex flex-col justify-center">
+        <SectionTitle
+          header={"from our menu"}
+          subHeader={"check it out"}
+        ></SectionTitle>
+        <div className="grid md:grid-cols-2 gap-10">
+          {menu.map((item) => (
+            <MenuItem key={item._id} item={item}></MenuItem>
+          ))}
+        </div>
+        <button className="btn btn-outline border-0 border-b-4">
+          View Full Menu
+        </button>
       </div>
     </section>
   );
