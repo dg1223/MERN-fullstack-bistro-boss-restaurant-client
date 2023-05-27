@@ -43,7 +43,7 @@ const Dashboard = () => {
             </Link>
           </li>
           <li>
-            <Link>
+            <Link to="/dashboard/mycart">
               <FaShoppingCart /> My Cart
             </Link>
           </li>
@@ -54,13 +54,13 @@ const Dashboard = () => {
             </Link>
           </li>
           <li>
-            <Link>
+            <Link to="/menu">
               <FaHamburger /> Menu
             </Link>
           </li>
           <li>
-            <Link>
-              <FaShoppingBag /> Shop
+            <Link to="/order/salad">
+              <FaShoppingBag /> Order Food
             </Link>
           </li>
           <li>
