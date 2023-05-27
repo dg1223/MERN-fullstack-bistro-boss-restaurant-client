@@ -4,7 +4,6 @@ import Cover from "../../Shared/Cover/Cover";
 import { useState } from "react";
 import "react-tabs/style/react-tabs.css";
 import useMenu from "../../../hooks/useMenu";
-import FoodCard from "../../../components/SectionTitle/FoodCard/FoodCard";
 import OrderTab from "../OrderTab/OrderTab";
 import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -17,7 +16,7 @@ const Order = () => {
   // React tabs controlled mode
   const [tabIndex, setTabIndex] = useState(0);
   const [menu] = useMenu();
-  console.log(category);
+  //   console.log(category);
   const desserts = menu.filter((item) => item.category === "dessert");
   const pizza = menu.filter((item) => item.category === "pizza");
   const salad = menu.filter((item) => item.category === "salad");
@@ -32,7 +31,7 @@ const Order = () => {
       <Cover img={orderCover} title="order food"></Cover>
       <Tabs
         defaultIndex={initialIndex}
-        onSelect={(index) => console.log(index)}
+        // onSelect={(index) => console.log(index)}
       >
         <TabList>
           <Tab>Salad</Tab>
