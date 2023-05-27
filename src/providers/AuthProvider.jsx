@@ -22,9 +22,9 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, passowrd);
   };
 
-  const signIn = (email, passsword) => {
+  const signIn = (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logOut = () => {
