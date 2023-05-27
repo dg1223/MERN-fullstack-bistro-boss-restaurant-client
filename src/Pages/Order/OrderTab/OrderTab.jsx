@@ -14,10 +14,12 @@ const OrderTab = ({ items }) => {
   };
 
   const itemsPerSlide = 6;
-  const numberOfSlides = arange(
+  const pageCount = Math.ceil(items.length / itemsPerSlide);
+  const slides = [...new Array(pageCount).keys()];
+  /* const numberOfSlides = arange(
     0,
     parseInt(Math.ceil(items.length / itemsPerSlide))
-  );
+  ); */
   // console.log(numberOfSlides);
 
   return (
@@ -27,7 +29,8 @@ const OrderTab = ({ items }) => {
         modules={[Pagination]}
         className="mySwiper"
       >
-        {numberOfSlides.map((slideIndex) => (
+        {/* {numberOfSlides.map((slideIndex) => ( */}
+        {slides.map((slideIndex) => (
           <SwiperSlide key={slideIndex}>
             <div className="grid md:grid-cols-3 gap-10">
               {items
