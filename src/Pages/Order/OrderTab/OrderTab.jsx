@@ -3,9 +3,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
-import arange from "../../../utilities/utilities";
 
 const OrderTab = ({ items }) => {
+  // Pagination
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {
