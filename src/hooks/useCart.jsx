@@ -7,7 +7,7 @@ const useCart = () => {
 
   // data parameter is destructured -> renamed as cart
   // and default value is an empty array
-  const { isLoading, data: cart = [] } = useQuery({
+  const { refetch, data: cart = [] } = useQuery({
     queryKey: ["carts", user?.email],
     queryFn: async () => {
       const res = await fetch(
@@ -17,7 +17,7 @@ const useCart = () => {
     },
   });
 
-  return [cart, isLoading];
+  return [cart, refetch];
 };
 
 export default useCart;
