@@ -51,6 +51,7 @@ const router = createBrowserRouter([
     element: <Dashboard></Dashboard>,
     children: [
       {
+        // This is relative path. Absolute path starts with /
         path: "mycart",
         element: <MyCart></MyCart>,
       },
