@@ -17,24 +17,35 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password).then((result) => {
       const loggedUser = result.user;
       console.log(loggedUser);
       updateUserProfile(data.name, data.photoURL)
         .then(() => {
-          console.log("user profile info update");
-          reset();
-          Swal.fire({
-            title: "User signup successful",
-            showClass: {
-              popup: "animate__animated animate__fadeInDown",
+          const saveUser = { name: data.name, email: data.email };
+          fetch("http://localhost:5000/users", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
             },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutUp",
-            },
-          });
-          navigate("/");
+            body: JSON.stringify(saveUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.insertedId) {
+                reset();
+                Swal.fire({
+                  title: "User signup successful",
+                  showClass: {
+                    popup: "animate__animated animate__fadeInDown",
+                  },
+                  hideClass: {
+                    popup: "animate__animated animate__fadeOutUp",
+                  },
+                });
+                navigate("/");
+              }
+            });
         })
         .catch((error) => {
           console.log(error);
