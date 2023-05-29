@@ -27,10 +27,15 @@ const SocialLogin = () => {
         body: JSON.stringify(saveUser),
       })
         .then((res) => res.json())
-        .then((data) => {
+        // for existing user, no need to check
+        // as no ID will be inserted
+        /* .then((data) => {
           if (data.insertedId) {
             navigate(from, { replace: true });
           }
+        }); */
+        .then(() => {
+          navigate(from, { replace: true });
         });
     });
   };

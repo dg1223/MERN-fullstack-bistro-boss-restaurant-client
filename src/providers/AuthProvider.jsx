@@ -5,7 +5,6 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPhoneNumber,
   signInWithPopup,
   signOut,
   updateProfile,
@@ -35,7 +34,7 @@ const AuthProvider = ({ children }) => {
 
   const googleSignIn = () => {
     setLoading(true);
-    signInWithPopup(auth, googleProvider);
+    return signInWithPopup(auth, googleProvider);
   };
 
   const logOut = () => {
