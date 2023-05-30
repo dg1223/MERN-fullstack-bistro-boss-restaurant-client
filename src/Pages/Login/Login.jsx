@@ -123,7 +123,7 @@ const Login = () => {
                 {/* TODO: replace disabled={false} to {disabled} */}
                 <div className="form-control mt-6">
                   <input
-                    disabled={disabled}
+                    disabled={false}
                     className="btn btn-primary"
                     type="submit"
                     value="Login"
