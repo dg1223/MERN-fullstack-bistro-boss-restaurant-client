@@ -1,6 +1,9 @@
+import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+
 const Payment = () => {
   return (
     <div>
+      <SectionTitle subHeader="Pleae process" header="Payment"></SectionTitle>
       <h2 className="text-3xl">Give me money</h2>
     </div>
   );
