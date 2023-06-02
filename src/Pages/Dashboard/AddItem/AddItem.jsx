@@ -9,7 +9,7 @@ const AddItem = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const imgHostingUrl = `https://api.imgbb.com/1/upload?expiration=600&key=${imgHostingToken}`;
+  const imgHostingUrl = `https://api.imgbb.com/1/upload?key=${imgHostingToken}`;
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -21,9 +21,20 @@ const AddItem = () => {
       .then((res) => res.json())
       .then((imgResponse) => {
         console.log(imgResponse);
+        if (imgResponse.success) {
+          const imgURL = imgResponse.data.display_url;
+          const { name, price, category, recipe } = data;
+          const newItem = {
+            name,
+            price: parseFloat(price),
+            category,
+            recipe,
+            image: imgURL,
+          };
+          console.log(newItem);
+        }
       });
   };
-  console.log(errors);
 
   return (
     <div className="w-full px-10">
@@ -56,6 +67,7 @@ const AddItem = () => {
               <option>Salad</option>
               <option>Drinks</option>
               <option>Dessert</option>
+              <option>Deshi</option>
             </select>
           </div>
           <div className="form-control w-full">
