@@ -14,7 +14,6 @@ const useCart = () => {
     enabled: !loading,
     queryFn: async () => {
       const res = await axiosSecure(`/carts?email=${user.email}`);
-      console.log("res from axios", res);
       // no need to convert to JSON (res.json) because axios
       // automatically does it
       return res.data;
