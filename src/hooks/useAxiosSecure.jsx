@@ -14,6 +14,8 @@ const useAxiosSecure = () => {
   useEffect(() => {
     const source = axios.CancelToken.source();
 
+    // injects token by intercepting request to server
+    // token must be generated and stored prior to intercepting
     const requestInterceptor = axiosSecure.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem("access-token");
@@ -27,6 +29,7 @@ const useAxiosSecure = () => {
       }
     );
 
+    // intercepts response from server to examine if there is any error
     const responseInterceptor = axiosSecure.interceptors.response.use(
       (response) => response,
       async (error) => {
