@@ -4,6 +4,7 @@ import {
   FaEnvelope,
   FaHamburger,
   FaHome,
+  FaRandom,
   FaShoppingBag,
   FaShoppingCart,
   FaUser,
@@ -25,8 +26,7 @@ const Dashboard = () => {
   return (
     <div className="drawer drawer-mobile ">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col items-center justify-center">
-        <Outlet></Outlet>
+      <div className="drawer-content">
         {/* Page content here */}
         <label
           htmlFor="my-drawer-2"
@@ -34,6 +34,7 @@ const Dashboard = () => {
         >
           Open drawer
         </label>
+        <Outlet></Outlet>
       </div>
       <div className="drawer-side bg-[#D1A054]">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
@@ -43,12 +44,17 @@ const Dashboard = () => {
             <>
               <li>
                 <NavLink to="/dashboard/home">
-                  <FaHome /> User Home
+                  <FaHome /> Admin Home
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/dashboard/additem">
                   <FaUtensils /> Add an Item
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/manageitems">
+                  <FaWallet /> Manage Items
                 </NavLink>
               </li>
               <li>
@@ -75,17 +81,12 @@ const Dashboard = () => {
           </li>
           <li>
             <NavLink to="/menu">
-              <FaHamburger /> Menu
+              <FaHamburger /> Our Menu
             </NavLink>
           </li>
           <li>
             <NavLink to="/order/salad">
               <FaShoppingBag /> Order Food
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/contact">
-              <FaEnvelope /> Contact
             </NavLink>
           </li>
         </ul>
