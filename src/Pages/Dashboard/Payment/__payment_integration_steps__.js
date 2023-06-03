@@ -10,4 +10,7 @@
  *    make sure you provide amount in cents -> multiply by 100
  * 9. call payment intent API to get client secret and store it in a state
  * 10. use confirmCardPayment API with client secret and card info
+ * 11. display confirm card error
+ * 12. diplay confirm card success
+ * 13. do things after payment ->
  */

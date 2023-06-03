@@ -10,14 +10,26 @@ const CheckoutForm = ({ price }) => {
   const [axiosSecure] = useAxiosSecure();
   const [cardError, setCardError] = useState("");
   const [clientSecret, setClientSecret] = useState("");
+  // manage Pay button state: Keep button disabled while transaction
+  // is in progress
+  const [processing, setProcessing] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
-  useEffect(() => {
-    axiosSecure.postForm("/create-payment-intent", { price }).then((res) => {
-      // coming from backend
-      console.log(res.data.clientSecret);
-      setClientSecret(res.data.clientSecret);
-    });
-  }, [price, axiosSecure]);
+  useEffect(
+    () => {
+      axiosSecure.post("/create-payment-intent", { price }).then((res) => {
+        // coming from backend
+        console.log(res.data.clientSecret);
+        setClientSecret(res.data.clientSecret);
+      });
+      // if you don't keep the dependency array empty, useEffect will
+      // get called repeatedly because of some [unknown] changes in
+      // price and/or axiosSecure
+    },
+    [
+      /* price, axiosSecure */
+    ]
+  );
 
   const handleSubmit = async (event) => {
     // prevents browser from reloading page on event trigger
@@ -37,6 +49,7 @@ const CheckoutForm = ({ price }) => {
       type: "card",
       card,
     });
+
     if (error) {
       console.log("error", error);
       setCardError(error.message);
@@ -44,6 +57,10 @@ const CheckoutForm = ({ price }) => {
       setCardError("");
       console.log("payment method: ", paymentMethod);
     }
+
+    // when every payment component is found,
+    // set transaction to be in progress
+    setProcessing(true);
 
     const { paymentIntent, error: confirmError } =
       await stripe.confirmCardPayment(clientSecret, {
@@ -59,7 +76,13 @@ const CheckoutForm = ({ price }) => {
     if (confirmError) {
       console.log(confirmError);
     }
-    console.log(paymentIntent);
+    console.log("payment intent", paymentIntent);
+    setProcessing(false);
+
+    if (paymentIntent.status === "succeeded") {
+      setTransactionId(paymentIntent.id);
+      // TODO next steps
+    }
   };
 
   return (
@@ -70,9 +93,9 @@ const CheckoutForm = ({ price }) => {
             style: {
               base: {
                 fontSize: "16px",
-                color: "#ffffff",
+                color: "#000000",
                 "::placeholder": {
-                  color: "#ffffff",
+                  color: "#000000",
                 },
               },
               invalid: {
@@ -84,12 +107,17 @@ const CheckoutForm = ({ price }) => {
         <button
           className="btn btn-primary btn-sm mt-4"
           type="submit"
-          disabled={!stripe || !clientSecret}
+          disabled={!stripe || !clientSecret || processing}
         >
           Pay
         </button>
       </form>
-      {cardError && <p className="text-white ml-8">{cardError}</p>}
+      {cardError && <p className="text-black ml-8">{cardError}</p>}
+      {transactionId && (
+        <p className="text-black ml-8">
+          Transaction complete with transaction ID: {transactionId}
+        </p>
+      )}
     </>
   );
 };
