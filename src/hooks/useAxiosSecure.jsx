@@ -1,15 +1,38 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
+
+/**
+ * Solution #1: Simple => Initialize axiosSecure outside the useAxiosSecure hook
+ * so that it doesn't get called repeatedly
+ */
+const axiosSecure = axios.create({
+  baseURL: "http://localhost:5000",
+});
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
   const authContext = useAuth();
 
-  const axiosSecure = axios.create({
+  // The following naked call will trigger useEffect
+  // in CheckoutForm repeatedly.
+  /* const axiosSecure = axios.create({
     baseURL: "http://localhost:5000",
   });
+ */
+  // WHY?
+
+  /**
+   * The axiosSecure instance is created inside the hook, and it will have a new reference on every render. As a result, the useEffect in CheckoutForm will see a different axiosSecure reference on every render and trigger the effect repeatedly.
+   *
+   * Solution #2: Memoization => To fix the infinite API call issue, you can modify the useAxiosSecure hook to use useMemo to memoize the axiosSecure instance and prevent unnecessary re-creation.
+   */
+  /* const axiosSecure = useMemo(() => {
+    return axios.create({
+      baseURL: "http://localhost:5000",
+    });
+  }, []); */
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -59,7 +82,7 @@ const useAxiosSecure = () => {
       axiosSecure.interceptors.response.eject(responseInterceptor);
       source.cancel("Request canceled");
     };
-  }, [navigate, axiosSecure, authContext]);
+  }, [navigate, /* axiosSecure, */ authContext]);
 
   return [axiosSecure];
 };

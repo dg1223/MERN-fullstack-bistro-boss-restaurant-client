@@ -8,16 +8,19 @@ const stripePromise = loadStripe(import.meta.env.VITE_paymentGatewayPK);
 
 const Payment = () => {
   const [cart] = useCart();
-  console.log(cart);
+  // console.log(cart);
   const total = cart.reduce((sum, item) => sum + item.price, 0);
   const price = parseFloat(total.toFixed(2));
+  /* console.log("cart: ", cart);
+  console.log("total: ", total);
+  console.log("price: ", price); */
 
   return (
     <div>
       <SectionTitle subHeader="Pleae process" header="Payment"></SectionTitle>
       <h2 className="text-3xl">Give me money</h2>
       <Elements stripe={stripePromise}>
-        <CheckoutForm price={price}></CheckoutForm>
+        <CheckoutForm cart={cart} price={price}></CheckoutForm>
       </Elements>
     </div>
   );

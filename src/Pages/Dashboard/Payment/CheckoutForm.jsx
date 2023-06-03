@@ -2,8 +2,9 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import "./CheckoutForm.css";
 
-const CheckoutForm = ({ price }) => {
+const CheckoutForm = ({ cart, price }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { user } = useAuth();
@@ -15,21 +16,23 @@ const CheckoutForm = ({ price }) => {
   const [processing, setProcessing] = useState(false);
   const [transactionId, setTransactionId] = useState("");
 
-  useEffect(
-    () => {
+  useEffect(() => {
+    // Check if cart is empty. Without this check, the client keeps
+    // sending POST request to the server every time there's a component
+    // re-render. If the cart is empty, then the price is 0. Stripe is
+    // unable to process zero value on its end and the server ends up
+    // crashing.
+    if (price > 0) {
       axiosSecure.post("/create-payment-intent", { price }).then((res) => {
         // coming from backend
         console.log(res.data.clientSecret);
         setClientSecret(res.data.clientSecret);
       });
-      // if you don't keep the dependency array empty, useEffect will
-      // get called repeatedly because of some [unknown] changes in
-      // price and/or axiosSecure
-    },
-    [
-      /* price, axiosSecure */
-    ]
-  );
+    }
+    // if you don't keep the dependency array empty, useEffect will
+    // get called repeatedly because of some [unknown] changes in
+    // price and/or axiosSecure
+  }, [price, axiosSecure]);
 
   const handleSubmit = async (event) => {
     // prevents browser from reloading page on event trigger
@@ -45,7 +48,7 @@ const CheckoutForm = ({ price }) => {
     if (card == null) {
       return;
     }
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
+    const { error /* paymentMethod */ } = await stripe.createPaymentMethod({
       type: "card",
       card,
     });
@@ -55,7 +58,7 @@ const CheckoutForm = ({ price }) => {
       setCardError(error.message);
     } else {
       setCardError("");
-      console.log("payment method: ", paymentMethod);
+      // console.log("payment method: ", paymentMethod);
     }
 
     // when every payment component is found,
@@ -81,7 +84,25 @@ const CheckoutForm = ({ price }) => {
 
     if (paymentIntent.status === "succeeded") {
       setTransactionId(paymentIntent.id);
-      // TODO next steps
+
+      // save payment info on the server
+      const payment = {
+        email: user?.email,
+        transactionId: paymentIntent.id,
+        price,
+        date: new Date(),
+        quantity: cart.length,
+        cartItems: cart.map((item) => item._id),
+        menuItems: cart.map((item) => item.menuItemId),
+        status: "Service pending",
+        itemNames: cart.map((item) => item.name),
+      };
+      axiosSecure.post("/payments", payment).then((res) => {
+        console.log(res.data);
+        if (res.data.insertedId) {
+          // display confirmation
+        }
+      });
     }
   };
 
