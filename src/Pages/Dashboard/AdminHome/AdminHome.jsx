@@ -204,6 +204,7 @@ const AdminHome = () => {
               >
                 {chartData.map((entry, index) => (
                   <Cell
+                    name={entry.category}
                     key={`cell-${index}`}
                     fill={colors[index % colors.length]}
                   />
