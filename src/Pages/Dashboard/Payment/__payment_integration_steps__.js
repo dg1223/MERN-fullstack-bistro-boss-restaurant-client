@@ -8,4 +8,6 @@
  * 7. on the server side, install stripe
  * 8. create a payment intent with payment method types: ['card']
  *    make sure you provide amount in cents -> multiply by 100
+ * 9. call payment intent API to get client secret and store it in a state
+ * 10. use confirmCardPayment API with client secret and card info
  */
