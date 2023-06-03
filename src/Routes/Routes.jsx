@@ -14,6 +14,8 @@ import MyCart from "../Pages/Dashboard/MyCart/MyCart";
 import AdminRoute from "./AdminRoute";
 import ManageItems from "../Pages/Dashboard/ManageItems/ManageItems";
 import Payment from "../Pages/Dashboard/Payment/Payment";
+import UserHome from "../Pages/Dashboard/UserHome/UserHome";
+import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +62,10 @@ const router = createBrowserRouter([
     ),
     children: [
       {
+        path: "userhome",
+        element: <UserHome></UserHome>,
+      },
+      {
         // This is relative path. Absolute path starts with /
         path: "mycart",
         element: <MyCart></MyCart>,
@@ -69,6 +75,14 @@ const router = createBrowserRouter([
         element: <Payment></Payment>,
       },
       // admin routes
+      {
+        path: "adminhome",
+        element: (
+          <AdminRoute>
+            <AdminHome></AdminHome>
+          </AdminRoute>
+        ),
+      },
       {
         path: "allusers",
         element: (
