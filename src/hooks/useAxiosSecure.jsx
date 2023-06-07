@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 
 /**
+ * Issue: Prevent repeated useEffect() calls in CheckoutForm
+ *
  * Solution #1: Simple => Initialize axiosSecure outside the useAxiosSecure hook
  * so that it doesn't get called repeatedly
  */
